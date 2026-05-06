@@ -154,7 +154,7 @@ T+30  Application validated ✅ DR region is live
 
 | Version | Date | Notes |
 |---|---|---|
-| 1.0 | January 2026 | Initial DR plan designed and documented |
+| 1.0 | April 2026 | Initial DR plan designed and documented |
 
 ---
 
