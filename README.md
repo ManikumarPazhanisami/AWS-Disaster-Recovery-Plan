@@ -164,7 +164,7 @@ I'm a DevOps / Cloud Engineer with hands-on experience designing resilient AWS i
 
 Feel free to connect or reach out if you have questions about the approach!
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://linkedin.com/in/YOUR-PROFILE)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://[linkedin.com/in/mani-kumarmk/))
 
 ---
 
