@@ -1,0 +1,47 @@
+# =============================================================================
+# terraform.tfvars.example
+# Copy to terraform.tfvars and fill in your values
+# Never commit terraform.tfvars to git (it's in .gitignore)
+# =============================================================================
+
+primary_region = "us-east-1"
+dr_region      = "us-west-1"
+project_name   = "ias-prod"
+environment    = "DR"
+
+# ── Network ───────────────────────────────────────────────────────────────────
+dr_vpc_cidr         = "10.1.0.0/16"
+primary_vpc_cidr    = "10.0.0.0/16"   # your actual primary VPC CIDR
+public_subnet_cidrs = ["10.1.1.0/24", "10.1.2.0/24"]
+app_subnet_cidrs    = ["10.1.10.0/24", "10.1.11.0/24"]
+db_subnet_cidrs     = ["10.1.20.0/24", "10.1.21.0/24"]
+availability_zones  = ["us-west-1a", "us-west-1b"]
+
+# ── Database ──────────────────────────────────────────────────────────────────
+primary_cluster_identifier = "ias-prod-cluster"
+dr_cluster_identifier      = "ias-prod-cluster-dr"
+aurora_engine_version      = "8.0.mysql_aurora.3.08.2"
+aurora_min_capacity        = 1
+aurora_max_capacity        = 8
+db_master_username         = "admin"
+db_master_password         = "your-secure-password-here"   # use Secrets Manager in prod
+
+# ── Compute ───────────────────────────────────────────────────────────────────
+app_instance_type   = "t3.medium"
+nginx_instance_type = "t3.small"
+app_instance_count  = 2
+app_ami_id          = "ami-xxxxxxxxxxxxxxxxx"   # copied from us-east-1
+nginx_ami_id        = "ami-yyyyyyyyyyyyyyyyy"   # copied from us-east-1
+key_pair_name       = "dr-key-pair"
+
+# ── S3 ────────────────────────────────────────────────────────────────────────
+s3_bucket_names = ["mybucket-prod"]
+
+# ── Route53 ──────────────────────────────────────────────────────────────────
+hosted_zone_id = "ZXXXXXXXXXXXXX"
+api_domain     = "api.yourdomain.com"
+db_cname       = "db.yourdomain.com"
+
+# ── Monitoring ────────────────────────────────────────────────────────────────
+sns_alarm_arn                = "arn:aws:sns:us-west-1:123456789012:dr-alerts"
+replication_lag_threshold_ms = 5000
