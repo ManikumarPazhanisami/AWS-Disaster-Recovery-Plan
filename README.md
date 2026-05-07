@@ -1,6 +1,3 @@
-## 🏛️ Architecture Diagram
-
-![AWS DR Architecture](assets/aws-dr-architecture.png)
 
 # 🛡️ AWS Disaster Recovery Plan
 ### US-East-1 (Primary) → US-West-1 (DR)
