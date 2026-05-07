@@ -1,4 +1,3 @@
-
 # 🛡️ AWS Disaster Recovery Plan
 ### US-East-1 (Primary) → US-West-1 (DR)
 
@@ -27,7 +26,6 @@ The plan covers a complete failover setup from **US-East-1** (primary) to **US-W
 | **Implementation Timeline** | 6 weeks |
 | **Compliance** | SOC2-aligned |
 
----
 ---
 
 ## 🏛️ Disaster Recovery Architecture
@@ -109,6 +107,7 @@ Strategy: Warm Standby
 - Warm standby DR strategy with automated failover support
 
 ---
+
 ## 🏗️ Tech Stack
 
 | Service | Role |
@@ -128,22 +127,52 @@ Strategy: Warm Standby
 ## 📂 Repository Structure
 
 ```
-aws-dr-plan/
+AWS-Disaster-Recovery-Plan/
 │
-├── DR-Plan.html          # Full DR implementation plan (detailed doc)
-├── README.md             # This file
+├── .gitignore
+├── README.md                          # This file
 │
-├── scripts/              # CLI automation scripts
-│   ├── network-setup.sh
-│   ├── aurora-replication.sh
-│   ├── s3-crr-setup.sh
-│   └── failover-execute.sh
+├── docs/
+│   ├── DR-plan.html                   # Full DR implementation plan (detailed doc)
+│   └── AWS-DR-Plan-Architecture.png   # Architecture diagram
 │
-└── terraform/            # Infrastructure as Code templates
-    ├── network/
-    ├── database/
-    └── compute/
+├── scripts/                           # CLI automation scripts (run in order)
+│   ├── README.md                      # Script usage & prerequisites
+│   ├── network-scripts.sh             # Phase 2 & 3: VPC, subnets, NAT, security groups
+│   ├── aurora-replication.sh          # Phase 4: Aurora cross-region read replica
+│   ├── s3-crr-setup.sh                # Phase 5: S3 cross-region replication
+│   └── failover-execute.sh            # DR event: full failover execution (use --dry-run first)
+│
+└── terraform/                         # Infrastructure as Code (Terraform >= 1.6)
+    ├── main.tf                        # Root module — dual provider (primary + DR)
+    ├── variables.tf                   # All input variables with defaults
+    ├── outputs.tf                     # VPC, DB, compute, and DR summary outputs
+    ├── terraform.tfvars.example       # Copy to terraform.tfvars and fill in values
+    │
+    ├── network/                       # Phase 2 & 3: VPC, subnets, NAT, route tables, SGs
+    │   ├── main.tf
+    │   ├── variables.tf
+    │   └── outputs.tf
+    │
+    ├── database/                      # Phase 4: KMS key, Aurora replica, CloudWatch alarms
+    │   ├── main.tf
+    │   ├── variables.tf
+    │   └── output.tf
+    │
+    └── compute/                       # Phases 5–8: S3 CRR, EC2 templates, SQS, Route53
+        ├── main.tf
+        ├── variables.tf
+        └── output.tf
 ```
+
+> **Terraform quick start:**
+> ```bash
+> cd terraform
+> cp terraform.tfvars.example terraform.tfvars   # fill in your values
+> terraform init
+> terraform plan -var-file="terraform.tfvars"
+> terraform apply -var-file="terraform.tfvars"
+> ```
 
 ---
 
