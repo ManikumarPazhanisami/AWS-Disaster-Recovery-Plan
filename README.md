@@ -44,7 +44,7 @@ The plan covers a complete failover setup from **US-East-1** (primary) to **US-W
                 ▼                                               ▼
 
 ┌──────────────────────────────┐        Cross-Region DR       ┌──────────────────────────────┐
-│      AWS us-east-1           │  ─────────────────────────▶  │       AWS us-west-1         │
+│      AWS us-east-1           │  ─────────────────────────▶  │       AWS us-west-1          │
 │        PRIMARY REGION        │                              │         DR REGION            │
 └──────────────────────────────┘                              └──────────────────────────────┘
 
@@ -64,14 +64,14 @@ The plan covers a complete failover setup from **US-East-1** (primary) to **US-W
                ▼                                                           ▼
 
       ┌──────────────────────────┐                           ┌──────────────────────────┐
-      │ Aurora MySQL Serverless  │══════════════════════════▶ Aurora Global DB Replica │
-      │ Primary Cluster          │  Global DB Replication   │ us-west-1                │
+      │ Aurora MySQL Serverless  │══════════════════════════▶| Aurora Global DB Replica │
+      │ Primary Cluster          │  Global DB Replication    │ us-west-1                │
       └──────────────────────────┘                           └──────────────────────────┘
 
-               │                                                           ▲
-               │                                                           │
-               ▼                                                           │
-      ┌─────────────────┐                                   Promotion During DR
+               │                                                            ▲
+               │                                                            │
+               ▼                                                            │
+      ┌─────────────────┐                                       Promotion During DR
       │ S3 Buckets      │═══════════════════════════════════════════════════╝
       │ Versioning ON   │     Cross-Region Replication
       └─────────────────┘
