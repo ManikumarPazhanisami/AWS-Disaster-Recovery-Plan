@@ -23,3 +23,5 @@ variable "api_domain"          { type = string }
 variable "db_cname"            { type = string }
 variable "dr_db_endpoint"      { type = string; default = "" }
 variable "sns_alarm_arn"       { type = string; default = "" }
+variable "secret_arn"          { type = string; default = "" }
+variable "kms_key_arn"         { type = string; default = "" }

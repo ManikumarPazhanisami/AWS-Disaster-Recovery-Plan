@@ -236,13 +236,13 @@ T+30  Application validated ✅ DR region is live
 
 ## 🔧 Identified Gaps & Improvements
 
-| Gap | Improvement |
-|---|---|
-| Secrets Manager not replicated | Enable cross-region replication for all secrets |
-| SES in sandbox mode in DR region | Request production access proactively |
-| SQS in-flight messages at failover | Implement DLQ + document acceptable loss policy |
-| AMIs go stale between deploys | Integrate AMI copy into CI/CD pipeline |
-| Aurora promotion adds ~2 min | Adjust RTO estimate to 30–37 min realistically |
+| Gap | Status | Improvement |
+|---|---|---|
+| Secrets Manager not replicated | ✅ Resolved | Added `security` module with cross-region replication |
+| AMIs go stale between deploys | ✅ Improved | Added `ami-sync.sh` script for automated region copying |
+| SES in sandbox mode in DR region | ⚠️ Pending | Request production access proactively |
+| SQS in-flight messages at failover | ⚠️ Pending | Implement DLQ + document acceptable loss policy |
+| Aurora promotion adds ~2 min | ℹ️ Note | Adjust RTO estimate to 30–37 min realistically |
 
 ---
 
@@ -264,6 +264,7 @@ T+30  Application validated ✅ DR region is live
 
 | Version | Date | Notes |
 |---|---|---|
+| 1.1 | May 2026 | Added Secrets Manager replication & AMI sync automation |
 | 1.0 | April 2026 | Initial DR plan designed and documented |
 
 ---

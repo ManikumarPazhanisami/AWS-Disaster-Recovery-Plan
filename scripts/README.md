@@ -40,7 +40,8 @@ aws sts get-caller-identity
 1. network-scripts.sh       ← Run once during DR setup
 2. aurora-replication.sh    ← Run once during DR setup
 3. s3-crr-setup.sh          ← Run once during DR setup
-4. failover-execute.sh      ← Run ONLY during an actual DR event
+4. ami-sync.sh              ← Run as needed to keep AMIs updated
+5. failover-execute.sh      ← Run ONLY during an actual DR event
 ```
 
 ---
@@ -147,7 +148,23 @@ Add all your production buckets to the `BUCKET_BASES` array before running.
 
 ---
 
-### 4. `failover-execute.sh`
+### 4. `ami-sync.sh`
+**Phase 6 — AMI Cross-Region Copy**
+
+Automates the manual step of copying AMIs from US-East-1 to US-West-1:
+- Identifies the source AMI name and metadata.
+- Initiates `aws ec2 copy-image` to the DR region.
+- Waits for the new AMI to reach the `available` state.
+- Outputs the new AMI ID for updating Terraform variables.
+
+**Usage:**
+```bash
+./ami-sync.sh ami-1234567890abcdef0 "Optional description"
+```
+
+---
+
+### 5. `failover-execute.sh`
 **DR Execution — US-East-1 → US-West-1 Failover**
 
 > ⚠️ **Production failover script. Do not run this during drills without `--dry-run`.**

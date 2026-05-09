@@ -56,6 +56,20 @@ provider "aws" {
   }
 }
 
+# ── Security Module ───────────────────────────────────────────────────────────
+module "security" {
+  source = "./security"
+
+  providers = {
+    aws.primary = aws.primary
+    aws.dr      = aws.dr
+  }
+
+  project_name = var.project_name
+  environment  = var.environment
+  dr_region    = var.dr_region
+}
+
 # ── Network Module ────────────────────────────────────────────────────────────
 module "network" {
   source = "./network"
@@ -128,6 +142,8 @@ module "compute" {
   db_cname             = var.db_cname
   dr_db_endpoint       = module.database.dr_cluster_reader_endpoint
   sns_alarm_arn        = var.sns_alarm_arn
+  secret_arn           = module.security.secret_arn_primary
+  kms_key_arn          = module.security.kms_key_arn_dr
 
-  depends_on = [module.network, module.database]
+  depends_on = [module.network, module.database, module.security]
 }

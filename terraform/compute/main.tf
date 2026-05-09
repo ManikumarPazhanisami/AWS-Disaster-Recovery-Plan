@@ -138,6 +138,31 @@ resource "aws_iam_role_policy_attachment" "ec2_cloudwatch" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
+resource "aws_iam_role_policy" "ec2_secrets" {
+  count = var.secret_arn != "" ? 1 : 0
+  name  = "ec2-secrets-policy-${var.project_name}-dr"
+  role  = aws_iam_role.ec2_app.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ]
+        Resource = [var.secret_arn]
+      },
+      {
+        Effect = "Allow"
+        Action = ["kms:Decrypt"]
+        Resource = [var.kms_key_arn]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_instance_profile" "ec2_app" {
   name = "ec2-app-profile-${var.project_name}-dr"
   role = aws_iam_role.ec2_app.name
